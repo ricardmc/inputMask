@@ -5,11 +5,12 @@ import { ValidateCustomNumbersOnlyPattern } from './validators/custom-numbersOnl
 import { ValidateCustomMaxLength } from './validators/custom-maxLengthAndValue.validator';
 import Inputmask from 'inputmask';
 import { ISeparator } from './validators/separator.model';
+import { DirectivesModule } from './directives.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, DirectivesModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -74,34 +75,39 @@ export class AppComponent {
   }
 
   getInputMask(index: number, separators: ISeparator): void {
-    let inputHTMLElement = document.getElementById(`input${index}`) || '';
+    let inputHTMLElement = document.getElementById(`input${index}`);
 
-    Inputmask(``,
-      {
-        // alias: 'numeric',
-        groupSeparator: separators.thousand,
-        radixPoint: separators.decimal, 
-        regex: '[0-9]{2,4}\\' + separators.decimal + '[0-9]{2,4}',
-        digits: '2',
-        max: 100,   
-        rightAlign: true,
-        insertMode: true,
-        allowMinus: true,
-        negationSymbol: {
-          front: "-", // "("
-          back: "" // ")"
-        },
-        prefix: "",
-        suffix: "",
-        // digitsOptional: false,  
-        // placeholder: `0${separators.decimal}00`,
-        // showMaskOnFocus: true,
-        // unmaskAsNumber: true,
-        positionCaretOnClick: 'radixFocus',
-        inputType: "text",
-        inputmode: 'decimal',
-      }
-    ).mask(inputHTMLElement);
+    if (inputHTMLElement) {
+      Inputmask(``,
+        {
+          // alias: 'numeric',
+          groupSeparator: separators.thousand,
+          radixPoint: separators.decimal, 
+          regex: '[0-9]{2,4}\\' + separators.decimal + '[0-9]{2,4}',
+          digits: '2',
+          max: 100,   
+          rightAlign: true,
+          insertMode: true,
+          allowMinus: true,
+          negationSymbol: {
+            front: "-", // "("
+            back: "" // ")"
+          },
+          prefix: "",
+          suffix: "",
+          // digitsOptional: false,  
+          // placeholder: `0${separators.decimal}00`,
+          // showMaskOnFocus: true,
+          // unmaskAsNumber: true,
+          positionCaretOnClick: 'radixFocus',
+          inputType: "text",
+          inputmode: 'decimal',
+          onKeyDown: () => {
+
+          }        
+        }
+      ).mask(inputHTMLElement);
+    }
   }  
 }
 
